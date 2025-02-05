@@ -79,7 +79,7 @@ def main():
 
     # Dev tools
     dp.add_handler(CommandHandler("id", dev.reply_id))
-    dp.add_handler(CommandHandler("shutdown", functools.partial(dev.shutdown, updater=updater), filters=filters.User(6773539089)))
+    dp.add_handler(CommandHandler("shutdown", functools.partial(dev.shutdown, updater=updater), filters=filters.User(208589966)))
     dp.add_handler(CommandHandler("upload", dev.upload, filters=filters.Chat(TRANSLATION_CHAT_ID)))
 
     # Help commands
