@@ -24,24 +24,24 @@ def main():
     dp.add_handler(CommandHandler("start", stats.private_stats_command, filters=filters.Regex("stats")))
 
     # Game-related handlers
-    dp.add_handler(CommandHandler("start", functools.partial(group.start, dp=dp), filters=filters.ChatType.GROUP))
+    dp.add_handler(CommandHandler("start", functools.partial(group.start, dp=dp), filters=filters.chat_type.group))
     dp.add_handler(CallbackQueryHandler(group.player_join, pattern="join"))
-    dp.add_handler(CommandHandler("abort_game", game.abort_game, filters=filters.ChatType.GROUP))
-    dp.add_handler(MessageHandler(filters.ChatType.GROUP & filters.Text & filters.Update.message, game.message))
+    dp.add_handler(CommandHandler("abort_game", game.abort_game, filters=filters.chat_type.group))
+    dp.add_handler(MessageHandler(filters.chat_type.group & filters.text & filters.update.message, game.message))
     dp.add_handler(CallbackQueryHandler(game.secret_word, pattern="word"))
     dp.add_handler(CallbackQueryHandler(game.vote, pattern="vote"))
     dp.add_handler(CallbackQueryHandler(game.draw, pattern="draw"))
-    dp.add_handler(MessageHandler(filters.ChatType.GROUP & filters.Text, game.guess), 1)
+    dp.add_handler(MessageHandler(filters.chat_type.group & filters.text, game.guess), 1)
 
     # Next game handler
-    dp.add_handler(CommandHandler("nextgame", group.nextgame_command, filters=filters.ChatType.GROUP))
-    dp.add_handler(CommandHandler("start", group.nextgame_start, filters=filters.ChatType.PRIVATE), 2)
+    dp.add_handler(CommandHandler("nextgame", group.nextgame_command, filters=filters.chat_type.group))
+    dp.add_handler(CommandHandler("start", group.nextgame_start, filters=filters.chat_type.private), 2)
 
     # Group-related commands
     dp.add_handler(CommandHandler("game_rules", group.game_rules))
-    dp.add_handler(CommandHandler("settings", group_settings.group_setting, filters=filters.ChatType.GROUP))
-    dp.add_handler(CommandHandler("start", group_settings.start, filters=filters.ChatType.PRIVATE))
-    dp.add_handler(CommandHandler("admins_reload", group_settings.admins_reload, filters=filters.ChatType.GROUP))
+    dp.add_handler(CommandHandler("settings", group_settings.group_setting, filters=filters.chat_type.group))
+    dp.add_handler(CommandHandler("start", group_settings.start, filters=filters.chat_type.private))
+    dp.add_handler(CommandHandler("admins_reload", group_settings.admins_reload, filters=filters.chat_type.group))
     
     # Group settings
     dp.add_handler(CallbackQueryHandler(group_settings.refresh, pattern="(?=.*groupsetting)(?=.*refresh)"))
@@ -62,29 +62,29 @@ def main():
     dp.add_handler(MessageHandler(filters.StatusUpdate.new_chat_title, group.change_title))
 
     # Private language change
-    dp.add_handler(CommandHandler("language", private.change_language, filters=filters.ChatType.PRIVATE))
+    dp.add_handler(CommandHandler("language", private.change_language, filters=filters.chat_type.private))
     dp.add_handler(CallbackQueryHandler(private.selected_language, pattern="privatelanguage"))
 
     # More private commands
-    dp.add_handler(CommandHandler("translation", private.translation, filters=filters.ChatType.PRIVATE))
-    dp.add_handler(CommandHandler("deck", private.deck, filters=filters.ChatType.PRIVATE))
-    dp.add_handler(CommandHandler("start", private.start, filters=filters.ChatType.PRIVATE), 1)
-    dp.add_handler(CommandHandler("settings_help", private.settings_help, filters=filters.ChatType.PRIVATE))
+    dp.add_handler(CommandHandler("translation", private.translation, filters=filters.chat_type.private))
+    dp.add_handler(CommandHandler("deck", private.deck, filters=filters.chat_type.private))
+    dp.add_handler(CommandHandler("start", private.start, filters=filters.chat_type.private), 1)
+    dp.add_handler(CommandHandler("settings_help", private.settings_help, filters=filters.chat_type.private))
     dp.add_handler(CallbackQueryHandler(private.settings_help_edit, pattern="settingshelp"))
 
     # Stats
     dp.add_handler(InlineQueryHandler(stats.private_stats))
-    dp.add_handler(CommandHandler("stats", stats.private_stats_command, filters=filters.ChatType.PRIVATE))
-    dp.add_handler(CommandHandler("stats", stats.group_stats, filters=filters.ChatType.GROUP))
+    dp.add_handler(CommandHandler("stats", stats.private_stats_command, filters=filters.chat_type.private))
+    dp.add_handler(CommandHandler("stats", stats.group_stats, filters=filters.chat_type.group))
 
     # Dev tools
     dp.add_handler(CommandHandler("id", dev.reply_id))
-    dp.add_handler(CommandHandler("shutdown", functools.partial(dev.shutdown, updater=updater), filters=filters.User(208589966)))
-    dp.add_handler(CommandHandler("upload", dev.upload, filters=filters.Chat(TRANSLATION_CHAT_ID)))
+    dp.add_handler(CommandHandler("shutdown", functools.partial(dev.shutdown, updater=updater), filters=filters.user(208589966)))
+    dp.add_handler(CommandHandler("upload", dev.upload, filters=filters.chat(TRANSLATION_CHAT_ID)))
 
     # Help commands
-    dp.add_handler(CommandHandler("help", group.help_message, filters=filters.ChatType.GROUP))
-    dp.add_handler(CommandHandler("help", private.help_message, filters=filters.ChatType.PRIVATE))
+    dp.add_handler(CommandHandler("help", group.help_message, filters=filters.chat_type.group))
+    dp.add_handler(CommandHandler("help", private.help_message, filters=filters.chat_type.private))
 
     # Error handler
     dp.add_error_handler(dev.error_handler)
